@@ -7,6 +7,11 @@ from PIL import Image
 # ===== safe import mediapipe =====
 try:
     import mediapipe as mp
+    # Check for solutions attribute
+    if not hasattr(mp, 'solutions'):
+        # Fallback for older versions
+        import mediapipe.python.solutions as mp_solutions
+        mp.solutions = mp_solutions
 except Exception:
     mp = None
 
