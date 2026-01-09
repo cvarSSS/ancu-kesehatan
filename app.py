@@ -105,62 +105,62 @@ ax.set_yticks([])
 st.pyplot(fig)
 
 # ================= AI SECTION =================
-st.markdown("---")
-st.subheader("2. Estimasi Postur Tubuh Berbasis AI (Opsional)")
+# st.markdown("---")
+# st.subheader("2. Estimasi Postur Tubuh Berbasis AI (Opsional)")
 
-if mp is None:
-    st.info("Fitur AI tidak tersedia di environment ini.")
-else:
-    uploaded = st.file_uploader(
-        "Upload foto tubuh tampak depan",
-        type=["jpg", "jpeg", "png"]
-    )
+# if mp is None:
+#     st.info("Fitur AI tidak tersedia di environment ini.")
+# else:
+#     uploaded = st.file_uploader(
+#         "Upload foto tubuh tampak depan",
+#         type=["jpg", "jpeg", "png"]
+#     )
 
-    if uploaded:
-        image = Image.open(uploaded).convert("RGB")
-        img = np.array(image)
+#     if uploaded:
+#         image = Image.open(uploaded).convert("RGB")
+#         img = np.array(image)
 
-        mp_pose = mp.solutions.pose
+#         mp_pose = mp.solutions.pose
 
-        with mp_pose.Pose(
-            static_image_mode=True,
-            model_complexity=1,
-            min_detection_confidence=0.5
-        ) as pose:
-            results = pose.process(img)
+#         with mp_pose.Pose(
+#             static_image_mode=True,
+#             model_complexity=1,
+#             min_detection_confidence=0.5
+#         ) as pose:
+#             results = pose.process(img)
 
-        if not results.pose_landmarks:
-            st.error("Tubuh tidak terdeteksi. Gunakan foto tampak depan.")
-        else:
-            lm = results.pose_landmarks.landmark
-            ls, rs = lm[11], lm[12]
-            lh, rh = lm[23], lm[24]
+#         if not results.pose_landmarks:
+#             st.error("Tubuh tidak terdeteksi. Gunakan foto tampak depan.")
+#         else:
+#             lm = results.pose_landmarks.landmark
+#             ls, rs = lm[11], lm[12]
+#             lh, rh = lm[23], lm[24]
 
-            shoulder = abs(ls.x - rs.x)
-            hip = abs(lh.x - rh.x)
-            ratio = shoulder / hip
+#             shoulder = abs(ls.x - rs.x)
+#             hip = abs(lh.x - rh.x)
+#             ratio = shoulder / hip
 
-            if ratio > 1.25:
-                kategori_ai = "Kurus (Estimasi Visual)"
-            elif ratio > 1.05:
-                kategori_ai = "Normal (Estimasi Visual)"
-            elif ratio > 0.9:
-                kategori_ai = "Gemuk (Estimasi Visual)"
-            else:
-                kategori_ai = "Obesitas (Estimasi Visual)"
+#             if ratio > 1.25:
+#                 kategori_ai = "Kurus (Estimasi Visual)"
+#             elif ratio > 1.05:
+#                 kategori_ai = "Normal (Estimasi Visual)"
+#             elif ratio > 0.9:
+#                 kategori_ai = "Gemuk (Estimasi Visual)"
+#             else:
+#                 kategori_ai = "Obesitas (Estimasi Visual)"
 
-            st.markdown(f"""
-            **Hasil Estimasi AI:** {kategori_ai}
+#             st.markdown(f"""
+#             **Hasil Estimasi AI:** {kategori_ai}
 
-            Estimasi ini hanya sebagai pendukung visual
-            dan tidak menggantikan hasil BMI.
-            """)
+#             Estimasi ini hanya sebagai pendukung visual
+#             dan tidak menggantikan hasil BMI.
+#             """)
 
-            st.image(
-                image,
-                caption="Foto yang dianalisis",
-                use_container_width=True
-            )
+#             st.image(
+#                 image,
+#                 caption="Foto yang dianalisis",
+#                 use_container_width=True
+#             )
 
 # ================= EDUKASI =================
 st.markdown("---")
@@ -188,3 +188,4 @@ st.markdown(
     "<hr><p style='text-align:center; color:gray;'>Dibuat dengan cinta oleh Ancu - 2026</p>",
     unsafe_allow_html=True
 )
+
