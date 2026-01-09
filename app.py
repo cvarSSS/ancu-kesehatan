@@ -7,11 +7,15 @@ from PIL import Image
 # ===== safe import mediapipe =====
 try:
     import mediapipe as mp
-    # Check for solutions attribute
-    if not hasattr(mp, 'solutions'):
+    # Try to access solutions
+    _ = mp.solutions.pose
+except AttributeError:
+    try:
         # Fallback for older versions
-        import mediapipe.python.solutions as mp_solutions
-        mp.solutions = mp_solutions
+        import mediapipe.python.solutions.pose as pose
+        mp.solutions = type('solutions', (), {'pose': pose})()
+    except ImportError:
+        mp = None
 except Exception:
     mp = None
 
