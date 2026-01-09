@@ -4,12 +4,6 @@ import pandas as pd
 import numpy as np
 from PIL import Image
 
-# ===== safe import mediapipe =====
-try:
-    import mediapipe as mp
-except Exception:
-    mp = None
-
 # ================= config =================
 st.set_page_config(
     page_title="Ancu Kesehatan",
@@ -20,17 +14,17 @@ st.set_page_config(
 st.markdown("""
 <h1 style="text-align:center;">Ancu Kesehatan</h1>
 <p style="text-align:center; color:gray;">
-Analisis BMI & Estimasi Postur Tubuh Berbasis AI
+Analisis BMI & Edukasi Kesehatan
 </p>
 <hr>
 """, unsafe_allow_html=True)
 
 st.markdown(
-    "Aplikasi edukasi kesehatan berbasis data tubuh dan analisis visual AI."
+    "Aplikasi edukasi kesehatan berbasis data tubuh dan pemahaman risiko BMI."
 )
 
 st.warning(
-    "Hasil AI bersifat edukatif dan bukan diagnosis medis."
+    "Aplikasi ini bersifat edukatif dan bukan pengganti diagnosis medis."
 )
 
 # ================= BMI INPUT =================
@@ -97,63 +91,23 @@ ax.set_xlabel("Nilai BMI")
 ax.set_yticks([])
 st.pyplot(fig)
 
-# ================= AI SECTION =================
+# ================= EDUKASI VISUAL =================
 st.markdown("---")
-st.subheader("2. Estimasi Postur Tubuh Berbasis AI (Opsional)")
+st.subheader("2. Upload Foto Tubuh (Edukasi Visual)")
 
-if mp is None:
-    st.info("Fitur AI tidak tersedia di environment ini.")
-else:
-    uploaded = st.file_uploader(
-        "Upload foto tubuh tampak depan",
-        type=["jpg", "jpeg", "png"]
+uploaded = st.file_uploader(
+    "Upload foto tubuh tampak depan",
+    type=["jpg", "jpeg", "png"]
+)
+
+if uploaded:
+    image = Image.open(uploaded).convert("RGB")
+    st.image(image, caption="Foto yang diunggah", use_column_width=True)
+
+    st.info(
+        "Analisis visual AI belum tersedia di server ini.\n\n"
+        "Gunakan hasil BMI sebagai indikator utama kesehatan."
     )
-
-    if uploaded:
-        image = Image.open(uploaded).convert("RGB")
-        img = np.array(image)
-
-        mp_pose = mp.solutions.pose
-
-        with mp_pose.Pose(
-            static_image_mode=True,
-            model_complexity=1,
-            min_detection_confidence=0.5
-        ) as pose:
-            results = pose.process(img)
-
-        if not results.pose_landmarks:
-            st.error("Tubuh tidak terdeteksi. Gunakan foto tampak depan.")
-        else:
-            lm = results.pose_landmarks.landmark
-            ls, rs = lm[11], lm[12]
-            lh, rh = lm[23], lm[24]
-
-            shoulder = abs(ls.x - rs.x)
-            hip = abs(lh.x - rh.x)
-            ratio = shoulder / hip
-
-            if ratio > 1.25:
-                kategori_ai = "Kurus (Estimasi Visual)"
-            elif ratio > 1.05:
-                kategori_ai = "Normal (Estimasi Visual)"
-            elif ratio > 0.9:
-                kategori_ai = "Gemuk (Estimasi Visual)"
-            else:
-                kategori_ai = "Obesitas (Estimasi Visual)"
-
-            st.markdown(f"""
-            **Hasil Estimasi AI:** {kategori_ai}
-
-            Estimasi ini hanya sebagai pendukung visual
-            dan tidak menggantikan hasil BMI.
-            """)
-
-            st.image(
-                image,
-                caption="Foto yang dianalisis",
-                use_column_width=True
-            )
 
 # ================= EDUKASI =================
 st.markdown("---")
