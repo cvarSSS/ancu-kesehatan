@@ -20,18 +20,16 @@ st.set_page_config(
 st.markdown("""
 <h1 style="text-align:center;">Ancu Kesehatan</h1>
 <p style="text-align:center; color:gray;">
-Analisis BMI & Estimasi Postur Tubuh Berbasis AI
+Aplikasi Sederhana untuk Cek BMI dan Tips Sehat
 </p>
 <hr>
 """, unsafe_allow_html=True)
 
-st.markdown(
-    "Aplikasi edukasi kesehatan berbasis data tubuh dan analisis visual AI."
-)
-
-st.warning(
-    "Hasil AI bersifat edukatif dan bukan diagnosis medis."
-)
+st.markdown("""
+Halo! Ini aplikasi buat ngecek BMI kamu berdasarkan berat dan tinggi badan.  
+Dari situ, aku kasih saran kesehatan yang mudah dipahami.  
+Ingat ya, ini cuma referensi, bukan ganti dokter!
+""")
 
 # ================= BMI INPUT =================
 st.subheader("1. Analisis BMI (Data Tubuh)")
@@ -88,10 +86,10 @@ st.markdown(f"""
 st.subheader("Visualisasi Zona BMI")
 
 fig, ax = plt.subplots(figsize=(8, 2))
-ax.axvspan(0, 18.5, alpha=0.4)
-ax.axvspan(18.5, 24.9, alpha=0.4)
-ax.axvspan(25, 29.9, alpha=0.4)
-ax.axvspan(30, 40, alpha=0.4)
+ax.axvspan(0, 18.5, color='orange', alpha=0.4)
+ax.axvspan(18.5, 24.9, color='green', alpha=0.4)
+ax.axvspan(25, 29.9, color='yellow', alpha=0.4)
+ax.axvspan(30, 40, color='red', alpha=0.4)
 ax.axvline(bmi, linestyle="--", linewidth=2)
 ax.set_xlabel("Nilai BMI")
 ax.set_yticks([])
@@ -152,7 +150,7 @@ else:
             st.image(
                 image,
                 caption="Foto yang dianalisis",
-                use_column_width=True
+                use_container_width=True
             )
 
 # ================= EDUKASI =================
@@ -178,6 +176,6 @@ with st.expander("Edukasi BMI, Risiko, dan Saran Umum"):
 
 # ================= FOOTER =================
 st.markdown(
-    "<hr><p style='text-align:center; color:gray;'>Ancu Kesehatan © 2026</p>",
+    "<hr><p style='text-align:center; color:gray;'>Dibuat dengan cinta oleh Ancu - 2026</p>",
     unsafe_allow_html=True
 )
