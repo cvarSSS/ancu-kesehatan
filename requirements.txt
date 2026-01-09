@@ -4,4 +4,3 @@ pandas
 matplotlib
 opencv-python-headless
 Pillow
-mediapipe>=0.10.0
