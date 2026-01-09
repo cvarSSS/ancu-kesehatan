@@ -1,7 +1,7 @@
 streamlit
-opencv-python
-mediapipe
 numpy
-pillow
-matplotlib
 pandas
+matplotlib
+mediapipe
+opencv-python-headless
+Pillow
